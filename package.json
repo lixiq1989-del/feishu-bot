@@ -1,0 +1,38 @@
+{
+  "name": "feishu-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "example": "ts-node example.ts",
+    "dev": "ts-node src/index.ts",
+    "test:msg": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node tests/test1_send_message.ts",
+    "test:doc": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node tests/test2_create_doc.ts",
+    "test:bitable": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node tests/test3_create_bitable.ts",
+    "gen": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts",
+    "gen:mianshi": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts --theme 面试",
+    "gen:jianli": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts --theme 简历",
+    "gen:data": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts --type 真实数据",
+    "gen:save": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts --save",
+    "gen:save:mianshi": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/generate_xhs_post.ts --theme 面试 --save",
+    "jobs": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_job_tracker.ts",
+    "jobs:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_job_tracker.ts --init",
+    "bot": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/bot_server.ts",
+    "task": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/task_bot.ts",
+    "task:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/task_bot.ts --init",
+    "insight": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_industry_insight.ts",
+    "insight:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_industry_insight.ts --init"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.59.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
