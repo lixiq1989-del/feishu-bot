@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx ts-node scripts/$([ \"$BOT_TYPE\" = \"task\" ] && echo task_bot.ts || echo bot_server.ts)",
+    "startCommand": "NODE_TLS_REJECT_UNAUTHORIZED=0 sh scripts/start.sh",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   }
