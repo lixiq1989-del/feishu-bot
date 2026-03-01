@@ -51,7 +51,7 @@ import {
   TaskPriority,
 } from '../src/task_store';
 
-const PORT = process.env.TASK_BOT_PORT ? parseInt(process.env.TASK_BOT_PORT) : 3001;
+const PORT = parseInt(process.env.PORT || process.env.TASK_BOT_PORT || '3001');
 const VERIFICATION_TOKEN = process.env.FEISHU_VERIFICATION_TOKEN || '';
 
 // ─── 多群配置 ─────────────────────────────────────────────────────
