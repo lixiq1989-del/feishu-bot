@@ -140,26 +140,25 @@ async function processAction(
   }
 }
 
-// ─── Claude API 调用 ──────────────────────────────────────────────
+// ─── DeepSeek API 调用 ───────────────────────────────────────────
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 
 async function callClaude(prompt: string, maxTokens = 1000): Promise<string> {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'deepseek-chat',
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }],
     });
 
     const req = https.request({
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
+      hostname: 'api.deepseek.com',
+      path: '/v1/chat/completions',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
       },
     }, (res) => {
       let data = '';
@@ -168,7 +167,7 @@ async function callClaude(prompt: string, maxTokens = 1000): Promise<string> {
         try {
           const json = JSON.parse(data);
           if (json.error) { reject(new Error(json.error.message)); return; }
-          resolve(json.content?.[0]?.text || '');
+          resolve(json.choices?.[0]?.message?.content || '');
         } catch (e: any) {
           reject(e);
         }
