@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内容加工台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; background: #f5f5f7; color: #1d1d1f; min-height: 100vh; }
+
+  .header { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header .meta { font-size: 13px; color: #888; }
+
+  .main { max-width: 900px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .main { grid-template-columns: 1fr; } }
+
+  .panel { background: #fff; border-radius: 12px; border: 1px solid #e5e5e5; overflow: hidden; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 14px; font-weight: 600; }
+  .panel-body { padding: 16px 20px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.15s; }
+  .btn-primary { background: #0052d9; color: #fff; }
+  .btn-primary:hover { background: #0040b0; }
+  .btn-primary:disabled { background: #99b8f0; cursor: not-allowed; }
+  .btn-ghost { background: #f5f5f7; color: #333; border: 1px solid #e0e0e0; }
+  .btn-ghost:hover { background: #ebebeb; }
+  .btn-success { background: #00b365; color: #fff; }
+  .btn-success:hover { background: #009955; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+
+  .item-card { padding: 14px; border-radius: 8px; border: 1px solid #f0f0f0; margin-bottom: 10px; transition: border-color 0.15s; }
+  .item-card:hover { border-color: #d0d0d0; }
+  .item-card.processed { background: #f0faf5; border-color: #b0e8cc; }
+  .item-card.saved { background: #f0f4ff; border-color: #b0c4f0; }
+  .item-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .item-num { font-size: 18px; flex-shrink: 0; }
+  .item-title { font-size: 13px; font-weight: 500; line-height: 1.4; flex: 1; }
+  .item-summary { font-size: 12px; color: #666; margin-bottom: 10px; padding-left: 28px; line-height: 1.5; }
+  .item-actions { display: flex; gap: 8px; padding-left: 28px; align-items: center; flex-wrap: wrap; }
+  .category-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .tag-interview { background: #fff0e0; color: #d06000; }
+  .tag-strategy { background: #e8f0ff; color: #2040c0; }
+  .tag-insight { background: #e8fff5; color: #006040; }
+
+  .result-area { min-height: 200px; }
+  .result-empty { color: #aaa; font-size: 13px; text-align: center; padding: 40px 0; }
+  .result-content { font-size: 13px; line-height: 1.8; white-space: pre-wrap; color: #333; }
+  .result-meta { font-size: 12px; color: #888; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; }
+  .result-actions { margin-top: 16px; display: flex; gap: 8px; align-items: center; }
+  .save-msg { font-size: 12px; color: #00b365; }
+
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner-dark { border-color: rgba(0,0,0,0.15); border-top-color: #333; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: #aaa; }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 13px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #1d1d1f; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📚 内容加工台</h1>
+  <span class="meta" id="date-label"></span>
+</div>
+
+<div class="main">
+
+  <!-- 左侧：今日内容 -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">今日待加工</span>
+      <button class="btn btn-primary btn-sm" id="search-btn" onclick="searchToday()">
+        搜索今日内容
+      </button>
+    </div>
+    <div class="panel-body">
+      <div id="items-container">
+        <div class="empty-state">
+          <div class="icon">🔍</div>
+          <p>点击「搜索今日内容」<br>获取今日精选</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：加工结果 -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">加工结果</span>
+      <div id="result-actions" style="display:none">
+        <button class="btn btn-success btn-sm" id="save-btn" onclick="saveToLibrary()">
+          存入知识库
+        </button>
+      </div>
+    </div>
+    <div class="panel-body result-area">
+      <div id="result-container">
+        <div class="result-empty">点击左侧「加工」按钮<br>AI 自动提炼核心观点</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentItemIndex = null;
+let currentResult = '';
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('date-label').textContent = new Date().toLocaleDateString('zh-CN');
+  loadToday();
+});
+
+// 加载今日已有内容
+async function loadToday() {
+  const res = await fetch('/api/today');
+  const data = await res.json();
+  if (data.items && data.items.length > 0) {
+    renderItems(data.items);
+  }
+}
+
+// 搜索今日内容
+async function searchToday() {
+  const btn = document.getElementById('search-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 搜索中...';
+
+  try {
+    const res = await fetch('/api/search', { method: 'POST' });
+    const data = await res.json();
+    if (data.ok) {
+      renderItems(data.items);
+      showToast('✅ 搜到 ' + data.items.length + ' 条内容');
+    } else {
+      showToast('❌ ' + data.error);
+    }
+  } catch (e) {
+    showToast('❌ 网络错误');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '搜索今日内容';
+}
+
+// 渲染内容列表
+function renderItems(items) {
+  const numEmoji = ['', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+  const catTag = {
+    interview: '<span class="category-tag tag-interview">🎯 面试</span>',
+    strategy:  '<span class="category-tag tag-strategy">📐 战略</span>',
+    insight:   '<span class="category-tag tag-insight">📊 洞察</span>',
+  };
+
+  const html = items.map(item => `
+    <div class="item-card ${item.processed ? 'processed' : ''} ${item.savedToLibrary ? 'saved' : ''}" id="card-${item.index}">
+      <div class="item-header">
+        <span class="item-num">${numEmoji[item.index] || item.index}</span>
+        <span class="item-title">${escHtml(item.title)}</span>
+      </div>
+      <div class="item-summary">${escHtml(item.summary)}</div>
+      <div class="item-actions">
+        ${catTag[item.category] || ''}
+        <button class="btn btn-ghost btn-sm" onclick="processItem(${item.index})">
+          ${item.processed ? '重新加工' : '加工'}
+        </button>
+        ${item.url ? `<a href="${escHtml(item.url)}" target="_blank" class="btn btn-ghost btn-sm">原文</a>` : ''}
+        ${item.savedToLibrary ? '<span style="font-size:12px;color:#888">✓ 已存档</span>' : ''}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('items-container').innerHTML = html;
+}
+
+// 加工某一条
+async function processItem(idx) {
+  currentItemIndex = idx;
+  const resultContainer = document.getElementById('result-container');
+  document.getElementById('result-actions').style.display = 'none';
+
+  resultContainer.innerHTML = `
+    <div style="text-align:center;padding:40px 0;color:#888">
+      <span class="spinner spinner-dark" style="width:20px;height:20px;border-width:3px"></span>
+      <p style="margin-top:12px;font-size:13px">AI 加工中，约10-20秒...</p>
+    </div>`;
+
+  try {
+    const res = await fetch('/api/process/' + idx, { method: 'POST' });
+    const data = await res.json();
+
+    if (data.ok) {
+      currentResult = data.result;
+      resultContainer.innerHTML = `
+        <div class="result-meta">来源：第${idx}条 · ${new Date().toLocaleTimeString('zh-CN')}</div>
+        <div class="result-content">${escHtml(data.result)}</div>
+      `;
+      document.getElementById('result-actions').style.display = 'block';
+      // 更新卡片状态
+      const card = document.getElementById('card-' + idx);
+      if (card) card.classList.add('processed');
+    } else {
+      resultContainer.innerHTML = `<div class="result-empty">❌ ${escHtml(data.error)}</div>`;
+    }
+  } catch (e) {
+    resultContainer.innerHTML = `<div class="result-empty">❌ 网络错误</div>`;
+  }
+}
+
+// 存入知识库
+async function saveToLibrary() {
+  if (!currentItemIndex) return;
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 存入中...';
+
+  try {
+    const res = await fetch('/api/save/' + currentItemIndex, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: currentResult }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      showToast('✅ ' + data.message);
+      btn.innerHTML = '✓ 已存入';
+      const card = document.getElementById('card-' + currentItemIndex);
+      if (card) card.classList.add('saved');
+      document.getElementById('result-actions').innerHTML +=
+        '<span class="save-msg">✓ ' + escHtml(data.message) + '</span>';
+    } else {
+      showToast('❌ ' + data.error);
+      btn.disabled = false;
+      btn.innerHTML = '存入知识库';
+    }
+  } catch {
+    showToast('❌ 网络错误');
+    btn.disabled = false;
+    btn.innerHTML = '存入知识库';
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2020",
-    "lib": ["es2020"],
+    "lib": ["es2020", "dom"],
     "types": ["node"],
     "strict": true,
     "skipLibCheck": true,
@@ -10,6 +10,6 @@
     "resolveJsonModule": true,
     "outDir": "./dist"
   },
-  "include": ["src/**/*", "tests/**/*", "*.ts"],
+  "include": ["src/**/*", "tests/**/*", "scripts/**/*", "*.ts"],
   "exclude": ["node_modules", "dist"]
 }

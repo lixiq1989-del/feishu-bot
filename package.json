@@ -21,14 +21,27 @@
     "task": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/task_bot.ts",
     "task:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/task_bot.ts --init",
     "insight": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_industry_insight.ts",
-    "insight:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_industry_insight.ts --init"
+    "insight:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_industry_insight.ts --init",
+    "curation": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_curation.ts",
+    "web": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/web_workbench.ts",
+    "job-hunting:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/setup_job_hunting.ts",
+    "job-hunting:setup": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/job_hunting_admin.ts --setup",
+    "job-hunting:add": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/job_hunting_admin.ts --add",
+    "job-hunting:remove": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/job_hunting_admin.ts --remove",
+    "job-hunting:list": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/job_hunting_admin.ts --list",
+    "job-hunting:guide": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/job_hunting_admin.ts --guide",
+    "xhs:comments": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/xhs_comments.ts",
+    "intern": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_intern_tracker.ts",
+    "intern:init": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node scripts/daily_intern_tracker.ts --init"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@larksuiteoapi/node-sdk": "^1.59.0"
+    "@larksuiteoapi/node-sdk": "^1.59.0",
+    "playwright": "^1.58.2",
+    "puppeteer-core": "^24.38.0"
   },
   "devDependencies": {
     "@types/node": "^25.3.2",

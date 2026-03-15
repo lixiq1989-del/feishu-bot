@@ -22,6 +22,8 @@ import { client } from '../src/client';
 import { generatePost, incrementUsage, saveToFeishuDoc } from '../src/tip_generator';
 import { CHANNELS } from '../src/channels';
 import { startWorkflow, handleCardAction } from '../src/workflow';
+import { getTodayState, markProcessed, markSaved } from '../src/curation_state';
+import { processCurationItem } from '../src/curation_processor';
 
 const PORT = process.env.BOT_PORT ? parseInt(process.env.BOT_PORT) : 3000;
 // 飞书开放平台 → 事件订阅 → Verification Token（可选，若配置了则做校验）
@@ -120,6 +122,43 @@ async function handleMessage(event: any) {
 
   // 打印 chat_id，方便首次配置时记录到 .env
   console.log(`[Bot] chat_id: ${chatId} | text: ${text.slice(0, 30)}`);
+
+  // ── 数字回复：加工今日精选内容 ─────────────────────────────────
+  const numMatch = text.trim().match(/^([1-9])$/);
+  if (numMatch) {
+    const idx = parseInt(numMatch[1]);
+    const state = getTodayState();
+    if (!state) {
+      await replyText(chatId, '今天还没有推送内容，请先运行 npm run curation');
+      return;
+    }
+    const item = state.items.find(i => i.index === idx);
+    if (!item) {
+      await replyText(chatId, `没有第 ${idx} 条，今天共 ${state.items.length} 条`);
+      return;
+    }
+    await replyText(chatId, `⏳ 正在加工第${idx}条：${item.title.slice(0, 30)}...`);
+    try {
+      const result = await processCurationItem(item);
+      markProcessed(idx);
+      await replyText(chatId, result + '\n\n─────────────\n回复「存」保存到知识库 | 回复数字继续加工其他条');
+    } catch (err: any) {
+      await replyText(chatId, `❌ 加工失败: ${err.message}`);
+    }
+    return;
+  }
+
+  // ── "存" 命令：保存最近加工的内容 ──────────────────────────────
+  if (text.trim() === '存' || text.trim() === '存入') {
+    await replyText(chatId, '✅ 已记录到知识库（Bitable存档功能下一步接入）');
+    return;
+  }
+
+  // ── "跳过" 命令：重新推送 ──────────────────────────────────────
+  if (text.trim() === '跳过') {
+    await replyText(chatId, '好的，明天重新搜一批 👍');
+    return;
+  }
 
   const parsed = parseCommand(text);
   if (!parsed) return;  // 不是命令，忽略

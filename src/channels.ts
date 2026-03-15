@@ -44,4 +44,11 @@ export const CHANNELS: Record<string, Channel> = {
     pushMinute: 0,
     enabled: !!process.env.CHAT_ID_STRATEGY,
   },
+  curation: {
+    chatId: process.env.CHAT_ID_CURATION || '',
+    name: '每日精选（个人）',
+    pushHour: 8,
+    pushMinute: 30,
+    enabled: !!process.env.CHAT_ID_CURATION,
+  },
 };

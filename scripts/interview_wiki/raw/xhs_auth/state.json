@@ -1,0 +1,166 @@
+{
+  "cookies": [
+    {
+      "name": "acw_tc",
+      "value": "0a00df6217733026610032569e9a40590aeb90a7a59138275034fe48b0cc99",
+      "domain": "www.xiaohongshu.com",
+      "path": "/",
+      "expires": 1773304460.975008,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "abRequestId",
+      "value": "cd4ed97f-8e0b-5536-b812-f4e3e405df05",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804838661.975976,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "webBuild",
+      "value": "5.14.6",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "xsecappid",
+      "value": "xhs-pc-web",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804840080,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "a1",
+      "value": "19ce1134a7ci9ix8e4kcmyc3jmw2g5huitr4x4q1v30000407270",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804838663,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "webId",
+      "value": "a102d5d6ae59a0e03a27fe3a9d838655",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804838663,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "unread",
+      "value": "{%22ub%22:%22647b2d1800000000130155d9%22%2C%22ue%22:%2263f8a72900000000130080f6%22%2C%22uc%22:17}",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "acw_tc",
+      "value": "0a5088c617733035818373403eb88444c4df969b58f06f469db327b7da6cca",
+      "domain": "edith.xiaohongshu.com",
+      "path": "/",
+      "expires": 1773305381.848206,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "web_session",
+      "value": "030037ae812354b4f7316c31ca2e4a2028ab75",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804839584.143639,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "acw_tc",
+      "value": "0ad627c517733035923647652e371267c84fe23d19040a24fbf11385851501",
+      "domain": "so.xiaohongshu.com",
+      "path": "/",
+      "expires": 1773305392.322096,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "loadts",
+      "value": "1773304080041",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "expires": 1804840080,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://www.xiaohongshu.com",
+      "localStorage": [
+        {
+          "name": "MF_STATISTICS",
+          "value": "{\"timestamp\":1773303559827,\"visitTimes\":0,\"readFeedCount\":0}"
+        },
+        {
+          "name": "XHS_STRATEGY_BOX",
+          "value": "{\"firstVisit-\":false}"
+        },
+        {
+          "name": "NEW_XHS_ABTEST_REPORT_KEY",
+          "value": "{\"a102d5d6ae59a0e03a27fe3a9d83865569b27720000000003400b246cd4ed97f-8e0b-5536-b812-f4e3e405df05\":\"2026-03-12\"}"
+        },
+        {
+          "name": "UNREAD_NOTE_INFO",
+          "value": "{\"cachedFeeds\":[],\"unreadBeginNoteId\":\"647b2d1800000000130155d9\",\"unreadEndNoteId\":\"63f8a72900000000130080f6\",\"unreadNoteCount\":17,\"timestamp\":0}"
+        },
+        {
+          "name": "guide-ExploreMoreGuide",
+          "value": "{\"neverShowAgainFlag\":false,\"hasShownFlag\":false,\"lastShowTime\":1773302661348}"
+        },
+        {
+          "name": "xhs-pc-theme",
+          "value": "system"
+        },
+        {
+          "name": "guide-ImageNoteGuide",
+          "value": "{\"neverShowAgainFlag\":false,\"hasShownFlag\":false,\"lastShowTime\":1773302661348}"
+        },
+        {
+          "name": "xhs_context_networkQuality",
+          "value": "MODERATE"
+        }
+      ]
+    },
+    {
+      "origin": "http://www.xiaohongshu.com",
+      "localStorage": [
+        {
+          "name": "xhs-pc-theme",
+          "value": "system"
+        },
+        {
+          "name": "XHS_STRATEGY_BOX",
+          "value": "{\"firstVisit-\":false}"
+        }
+      ]
+    }
+  ]
+}
